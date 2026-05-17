@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weapons Ball Fight</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-container">
+
+        <!-- Mode Selection Screen -->
+        <div id="mode-select-screen" class="screen">
+            <h2 class="screen-title">Select Game Mode</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 30px;">
+                <button class="mode-btn" onclick="selectMode('1v1')">1 VS 1 (Classic)</button>
+                <button class="mode-btn" onclick="selectMode('2v2')">2 VS 2 (Team Battle)</button>
+                <button class="mode-btn" onclick="selectMode('br8')">BATTLE ROYALE (8 Players)</button>
+            </div>
+            <p class="instruction" style="margin-top: 40px;">Choose how you want to play!</p>
+        </div>
+
+        <!-- Character Selection Screen -->
+        <div id="character-select-screen" class="screen hidden">
+            <h2 class="screen-title">Select Character</h2>
+            <div id="country-grid" class="selection-grid">
+                <!-- Populated by JS -->
+            </div>
+            <p class="instruction">Player <span id="char-turn-text">1</span>, pick your country!</p>
+            <button class="back-btn" onclick="goBack('CHAR')">⬅ Back</button>
+        </div>
+
+        <!-- Weapon Selection Screen -->
+        <div id="weapon-select-screen" class="screen hidden">
+            <h2 class="screen-title">Select Weapon</h2>
+            <div id="weapon-grid" class="selection-grid">
+                <!-- Populated by JS -->
+            </div>
+            <p class="instruction">Choose weapon for <span id="weapon-target-name">Country</span></p>
+            <button class="back-btn" onclick="goBack('WEAPON')">⬅ Back</button>
+        </div>
+
+        <!-- Battle Screen -->
+        <div id="battle-screen" class="screen hidden">
+            <div id="battle-hud">
+                <!-- Portraits, HP, and Skill Bars here -->
+            </div>
+
+            <div id="canvas-wrapper">
+                <canvas id="gameCanvas" width="430" height="430"></canvas>
+                <div id="game-over-screen" class="hidden">
+                    <h2 id="winner-text">Winner!</h2>
+                    <button id="restart-btn">Menu Utama</button>
+                </div>
+            </div>
+
+            <!-- Bottom Stats Panel (YouTube Content Focus) -->
+            <div id="bottom-stats-panel">
+                <div class="stats-row">
+                    <div class="stat-box" id="p1-skill-info">
+                        <div class="stat-label">Special Skill</div>
+                        <div class="stat-value" id="p1-skill-name">---</div>
+                    </div>
+                    <div class="stat-box" id="p1-dmg-info">
+                        <div class="stat-label">DMG</div>
+                        <div class="stat-value" id="p1-dmg-val">0.0</div>
+                    </div>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-label">Weapon Size</div>
+                        <div class="stat-value" id="p1-size-val">1.00</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Hits To Skill</div>
+                        <div class="stat-value" id="p1-hits-val">0 / 5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
