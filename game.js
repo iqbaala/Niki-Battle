@@ -103,18 +103,18 @@ const weapons = [
 const skillsConfig = {
     "United States": { name: "Rapid Fire", maxHits: 6, duration: 3000 },
     "Russia": { name: "Iron Defense", maxHits: 5, duration: 4000 },
-    "China": { name: "Dragon Trail", maxHits: 5, duration: 4000 },
+    "China": { name: "Dragon Trail", maxHits: 7, duration: 4000 },
     "India": { name: "Heal", maxHits: 5 },
     "South Korea": { name: "Turbo Spin", maxHits: 5, duration: 6000 },
     "United Kingdom": { name: "Royal Volley", maxHits: 5 },
     "Japan": { name: "Shadow Clone", maxHits: 5, duration: 4000 },
-    "Turkey": { name: "Ottoman Force", maxHits: 5, duration: 5000 },
+    "Turkey": { name: "Ottoman Force", maxHits: 4, duration: 5000 },
     "Pakistan": { name: "Swift Dash", maxHits: 5 },
     "Italy": { name: "Gladiator Rage", maxHits: 5, duration: 5000 },
-    "France": { name: "Tactical Slow", maxHits: 5, duration: 4000 },
+    "France": { name: "Tactical Slow", maxHits: 4, duration: 4000 },
     "Brazil": { name: "Carnival Rush", maxHits: 5, duration: 5000 },
     "Indonesia": { name: "Arrow Rain", maxHits: 5, duration: 3000 },
-    "Iran": { name: "Wall Resilience", maxHits: 5, duration: 5000 },
+    "Iran": { name: "Wall Resilience", maxHits: 6, duration: 5000 },
     "Egypt": { name: "Cursed Aura", maxHits: 5, duration: 5000 },
     "Australia": { name: "Boomerang Storm", maxHits: 5, duration: 4000 },
     "Israel": { name: "Fire Aura", maxHits: 5, duration: 4000 },
@@ -275,6 +275,7 @@ class Character {
         this.extraSpinAngle = 0;
         this.wallResilienceValue = 0;
         this.indonesiaShield = 0;
+        this.healFlashTimer = 0;
 
         this.shootTimer = config.weapon.shootInterval || 0;
         this.trailTimer = config.weapon.dropInterval || 0;
@@ -285,6 +286,7 @@ class Character {
         if (this.hitCooldown > 0) this.hitCooldown -= deltaTime;
         if (this.flashTimer > 0) this.flashTimer -= deltaTime;
         if (this.weaponClashCooldown > 0) this.weaponClashCooldown -= deltaTime;
+        if (this.healFlashTimer > 0) this.healFlashTimer -= deltaTime;
 
         let isBR = (gameMode === 'br8');
 
@@ -422,7 +424,7 @@ class Character {
             }
         }
 
-        if (hitWall) { playSound('tap'); this.speedMultiplier = 1.8; if (this.skillActive && this.name === "Iran") this.hp = Math.min(this.maxHp, this.hp + 2); }
+        if (hitWall) { playSound('tap'); this.speedMultiplier = 1.8; if (this.skillActive && this.name === "Iran") { this.hp = Math.min(this.maxHp, this.hp + 2); this.healFlashTimer = 150; } }
     }
 
     getWeaponPosition() {
@@ -486,22 +488,33 @@ class Character {
         ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.clip();
         if (this.img.complete) ctx.drawImage(this.img, -this.radius, -this.radius, this.radius * 2, this.radius * 2);
 
-        // Damage Flash
-        if (this.flashTimer > 0) { ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; ctx.fill(); }
+        // Damage Flash (Blink Red)
+        if (this.flashTimer > 0) { ctx.fillStyle = 'rgba(255, 0, 0, 0.7)'; ctx.fill(); }
 
-        // Skill Red Blink
+        // Heal Flash (Blink Green)
+        if (this.healFlashTimer > 0) { ctx.fillStyle = 'rgba(0, 255, 0, 0.7)'; ctx.fill(); }
+
+        // Skill Cool Blue Blink
         if (this.skillActive && Math.floor(Date.now() / 150) % 2 === 0) {
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.4)';
+            ctx.fillStyle = 'rgba(0, 150, 255, 0.5)';
             ctx.fill();
         }
 
-        if (this.invincible) { ctx.strokeStyle = 'cyan'; ctx.lineWidth = 6; ctx.stroke(); }
-        if (this.name === "Indonesia" && this.indonesiaShield > 0) { ctx.strokeStyle = '#4caf50'; ctx.lineWidth = 6; ctx.stroke(); }
         ctx.restore();
 
         ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.lineWidth = 4;
         ctx.strokeStyle = ['#6da366', '#c73636', '#3b78c9', '#e8a33a', '#9444b0', '#32a89c', '#a83267', '#8a8536'][this.teamId] || '#333';
         ctx.stroke();
+
+        // White Shield Circle Outline
+        let hasShield = this.invincible || (this.damageReduction > 0) || this.reflectDamage || (this.name === "Indonesia" && this.indonesiaShield > 0);
+        if (hasShield) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius + 4, 0, Math.PI * 2);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 6;
+            ctx.stroke();
+        }
 
         ctx.fillStyle = '#fff'; ctx.font = 'bold 20px "Fredoka One"'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = '#000';
         ctx.strokeText(Math.ceil(this.hp), this.x, this.y + 7); ctx.fillText(Math.ceil(this.hp), this.x, this.y + 7);
@@ -530,7 +543,7 @@ class Character {
             case "United States":
                 this.trailTimer = 0;
                 break;
-            case "India": this.hp = Math.min(this.maxHp, this.hp + 7); this.deactivateSkill(); break;
+            case "India": this.hp = Math.min(this.maxHp, this.hp + 7); this.healFlashTimer = 150; this.deactivateSkill(); break;
             case "United Kingdom":
                 for (let i = 0; i < 8; i++) { let a = i * (Math.PI * 2 / 8); bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 10, vy: Math.sin(a) * 10, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: a, size: isBR ? 42 : 70 }); }
                 this.deactivateSkill(); break;
@@ -546,10 +559,8 @@ class Character {
             case "Italy": this.damageMultiplier = 1.4; break;
             case "Japan": this.clones = [{ x: 0, y: 0 }, { x: 0, y: 0 }]; break;
             case "Australia":
-                for (let i = 0; i < 6; i++) {
-                    let a = i * (Math.PI * 2 / 6);
-                    bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 8, vy: Math.sin(a) * 8, img: getImg("Asset Senjata 2/Boomerang.png"), owner: this, angle: a, size: isBR ? 48 : 80, returning: true, returnTimer: 1000 });
-                }
+                let randomAngle = Math.random() * Math.PI * 2;
+                bullets.push({ x: this.x, y: this.y, vx: Math.cos(randomAngle) * 8, vy: Math.sin(randomAngle) * 8, img: getImg("Asset Senjata 2/Boomerang.png"), owner: this, angle: randomAngle, size: isBR ? 48 : 80, bounces: true, life: 4000 });
                 break;
             case "Ukraine": this.damageReduction = 0.5; break;
             case "Russia": this.invincible = true; break; // Handled in takeDamage for knockback
@@ -566,6 +577,7 @@ class Character {
     deactivateSkill() {
         this.skillActive = false; this.skillTimer = 0; this.invincible = false; this.damageMultiplier = 1.0; this.knockbackMult = 1.0;
         this.damageReduction = 0; this.reflectDamage = false; this.clones = []; this.indonesiaShield = 0;
+        this.skillPoints = 0;
         players.forEach(p => { if (p.speedMultiplier < 1.0) p.speedMultiplier = 1.0; });
     }
 }
@@ -761,8 +773,34 @@ function update(deltaTime) {
                 }
             }
         }
+
+        if (b.bounces) {
+            b.life -= deltaTime;
+            if (b.life <= 0) {
+                bullets.splice(i, 1);
+                continue;
+            }
+            if (b.x < 25) { b.x = 25; b.vx = Math.abs(b.vx); playSound('tap'); }
+            else if (b.x > 405) { b.x = 405; b.vx = -Math.abs(b.vx); playSound('tap'); }
+            if (b.y < 25) { b.y = 25; b.vy = Math.abs(b.vy); playSound('tap'); }
+            else if (b.y > 405) { b.y = 405; b.vy = -Math.abs(b.vy); playSound('tap'); }
+
+            if (gameMode === 'br8' && b.x >= 195 && b.x <= 235 && b.y >= 130 && b.y <= 300) {
+                let left = Math.abs(b.x - 195);
+                let right = Math.abs(b.x - 235);
+                let top = Math.abs(b.y - 130);
+                let bottom = Math.abs(b.y - 300);
+                let minOverlap = Math.min(left, right, top, bottom);
+                if (minOverlap === left) { b.x = 195; b.vx = -Math.abs(b.vx); }
+                else if (minOverlap === right) { b.x = 235; b.vx = Math.abs(b.vx); }
+                else if (minOverlap === top) { b.y = 130; b.vy = -Math.abs(b.vy); }
+                else { b.y = 300; b.vy = Math.abs(b.vy); }
+                playSound('tap');
+            }
+        }
+
         b.x += b.vx; b.y += b.vy;
-        if (gameMode === 'br8') {
+        if (!b.bounces && gameMode === 'br8') {
             let minX = 195, maxX = 235, minY = 130, maxY = 300;
             if (b.x >= minX && b.x <= maxX && b.y >= minY && b.y <= maxY) {
                 bullets.splice(i, 1);
@@ -770,21 +808,36 @@ function update(deltaTime) {
             }
         }
         if (b.x < -100 || b.x > 530 || b.y < -100 || b.y > 530) { bullets.splice(i, 1); continue; }
+        
+        let hitPlayer = false;
         for (let p of players) {
             if (p.hp > 0 && p.teamId !== b.owner.teamId && Math.hypot(p.x - b.x, p.y - b.y) < p.radius + b.size / 2) {
-                if (p.takeDamage(b.owner, b.x, b.y, true, b.damage || null)) {
-                    playSound(b.owner.weapon.hitSound); p1Hit(b.owner);
+                if (b.bounces) {
+                    if (!b.lastHits) b.lastHits = {};
+                    let now = Date.now();
+                    if (!b.lastHits[p.name] || now - b.lastHits[p.name] > 500) {
+                        b.lastHits[p.name] = now;
+                        if (p.takeDamage(b.owner, b.x, b.y, true, b.damage || null)) {
+                            playSound(b.owner.weapon.hitSound); p1Hit(b.owner);
+                        }
+                    }
+                } else {
+                    if (p.takeDamage(b.owner, b.x, b.y, true, b.damage || null)) {
+                        playSound(b.owner.weapon.hitSound); p1Hit(b.owner);
+                    }
+                    hitPlayer = true;
                 }
-                bullets.splice(i, 1); break;
             }
         }
+        if (hitPlayer) { bullets.splice(i, 1); break; }
     }
 
     // Trails Collision
     for (let t of trails) {
         for (let p of players) {
             if (p.hp > 0 && p.teamId !== t.owner.teamId && Math.hypot(p.x - t.x, p.y - t.y) < p.radius + t.size / 2) {
-                if (p.takeDamage(t.owner, t.x, t.y, true)) {
+                let damageAmount = (t.owner.name === "China") ? 1 : null;
+                if (p.takeDamage(t.owner, t.x, t.y, true, damageAmount)) {
                     playSound(t.owner.weapon.hitSound);
                     p1Hit(t.owner);
                 }
@@ -796,6 +849,7 @@ function update(deltaTime) {
 }
 
 function p1Hit(attacker) {
+    if (attacker.skillActive) return; // Prevent charging skill while active!
     if (attacker.skillPoints < attacker.skillConfig.maxHits) {
         attacker.skillPoints++;
         if (attacker.skillPoints >= attacker.skillConfig.maxHits) attacker.activateSkill();
