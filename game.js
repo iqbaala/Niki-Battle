@@ -60,6 +60,19 @@ let trails = [];
 let globalPacingMultiplier = 1.0;
 let screenShake = 0;
 let sparks = [];
+let floatingTexts = [];
+
+function spawnFloatingText(x, y, text, color) {
+    floatingTexts.push({
+        x: x,
+        y: y,
+        text: text,
+        color: color,
+        life: 1.0,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: -2.5
+    });
+}
 
 // Data Mapping
 const countryNames = [
@@ -424,7 +437,7 @@ class Character {
             }
         }
 
-        if (hitWall) { playSound('tap'); this.speedMultiplier = 1.8; if (this.skillActive && this.name === "Iran") { this.hp = Math.min(this.maxHp, this.hp + 2); this.healFlashTimer = 150; } }
+        if (hitWall) { playSound('tap'); this.speedMultiplier = 1.8; if (this.skillActive && this.name === "Iran") { this.hp = Math.min(this.maxHp, this.hp + 2); this.healFlashTimer = 150; spawnFloatingText(this.x, this.y - 20, "+2", '#33ff33'); } }
     }
 
     getWeaponPosition() {
@@ -458,17 +471,32 @@ class Character {
 
         // Reflect damage for Spain
         if (this.skillActive && this.name === "Spain" && attacker !== this) {
-            attacker.hp -= damage * 0.5; // Reflect 50%
+            let reflectDmg = damage * 0.5;
+            attacker.hp -= reflectDmg; // Reflect 50%
+            attacker.flashTimer = 100;
+            let refText = reflectDmg % 1 === 0 ? reflectDmg.toFixed(0) : reflectDmg.toFixed(1);
+            spawnFloatingText(attacker.x, attacker.y - 20, `-${refText}`, '#ff3333');
         }
 
         // Life Siphon for Israel
         if (attacker.skillActive && attacker.siphonLife) {
             attacker.hp = Math.min(attacker.maxHp, attacker.hp + 2);
+            attacker.healFlashTimer = 150;
+            spawnFloatingText(attacker.x, attacker.y - 20, "+2", '#33ff33');
         }
 
         this.hp -= damage; this.hitCooldown = 400; this.flashTimer = 100;
+        let dmgText = damage % 1 === 0 ? damage.toFixed(0) : damage.toFixed(1);
+        spawnFloatingText(this.x, this.y - 20, `-${dmgText}`, '#ff3333');
+
         screenShake = isCrit ? 15 : 5;
-        if (attacker.weapon.lifesteal > 0) attacker.hp = Math.min(attacker.maxHp, attacker.hp + damage * attacker.weapon.lifesteal);
+        if (attacker.weapon.lifesteal > 0) {
+            let lsAmt = damage * attacker.weapon.lifesteal;
+            attacker.hp = Math.min(attacker.maxHp, attacker.hp + lsAmt);
+            attacker.healFlashTimer = 150;
+            let lsText = lsAmt % 1 === 0 ? lsAmt.toFixed(0) : lsAmt.toFixed(1);
+            spawnFloatingText(attacker.x, attacker.y - 20, `+${lsText}`, '#33ff33');
+        }
 
         // Blood Splatters
         bloodSplatters.push({ x: hX, y: hY, size: 30 + Math.random() * 40, angle: Math.random() * Math.PI * 2, life: 1.0, maxLife: 1.0 });
@@ -543,7 +571,7 @@ class Character {
             case "United States":
                 this.trailTimer = 0;
                 break;
-            case "India": this.hp = Math.min(this.maxHp, this.hp + 7); this.healFlashTimer = 150; this.deactivateSkill(); break;
+            case "India": this.hp = Math.min(this.maxHp, this.hp + 7); this.healFlashTimer = 150; spawnFloatingText(this.x, this.y - 20, "+7", '#33ff33'); this.deactivateSkill(); break;
             case "United Kingdom":
                 for (let i = 0; i < 8; i++) { let a = i * (Math.PI * 2 / 8); bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 10, vy: Math.sin(a) * 10, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: a, size: isBR ? 42 : 70 }); }
                 this.deactivateSkill(); break;
@@ -559,8 +587,11 @@ class Character {
             case "Italy": this.damageMultiplier = 1.4; break;
             case "Japan": this.clones = [{ x: 0, y: 0 }, { x: 0, y: 0 }]; break;
             case "Australia":
-                let randomAngle = Math.random() * Math.PI * 2;
-                bullets.push({ x: this.x, y: this.y, vx: Math.cos(randomAngle) * 8, vy: Math.sin(randomAngle) * 8, img: getImg("Asset Senjata 2/Boomerang.png"), owner: this, angle: randomAngle, size: isBR ? 48 : 80, bounces: true, life: 4000 });
+                let baseAngle = Math.random() * Math.PI * 2;
+                for (let i = 0; i < 4; i++) {
+                    let a = baseAngle + i * (Math.PI * 2 / 4);
+                    bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 8, vy: Math.sin(a) * 8, img: getImg("Asset Senjata 2/Boomerang.png"), owner: this, angle: a, size: isBR ? 48 : 80, bounces: true, life: 4000 });
+                }
                 break;
             case "Ukraine": this.damageReduction = 0.5; break;
             case "Russia": this.invincible = true; break; // Handled in takeDamage for knockback
@@ -597,7 +628,7 @@ function createHudCardHtml(p, idx) {
 }
 
 function startBattle() {
-    bloodSplatters = []; bullets = []; trails = []; sparks = []; globalPacingMultiplier = 1.0; players = [];
+    bloodSplatters = []; bullets = []; trails = []; sparks = []; globalPacingMultiplier = 1.0; players = []; floatingTexts = [];
 
     selectedConfigs.forEach(c => {
         let x, y, safe = false;
@@ -672,6 +703,19 @@ function update(deltaTime) {
     for (let i = trails.length - 1; i >= 0; i--) {
         trails[i].duration -= deltaTime;
         if (trails[i].duration <= 0) trails.splice(i, 1);
+    }
+
+    // Floating Texts Update
+    for (let i = floatingTexts.length - 1; i >= 0; i--) {
+        let ft = floatingTexts[i];
+        ft.life -= 0.0012 * deltaTime;
+        if (ft.life <= 0) {
+            floatingTexts.splice(i, 1);
+        } else {
+            ft.x += ft.vx;
+            ft.y += ft.vy;
+            ft.vy += 0.002 * deltaTime;
+        }
     }
 
     players.forEach((p, idx) => {
@@ -950,6 +994,21 @@ function draw() {
     bullets.forEach(b => { ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.angle + Math.PI / 2); if (b.img.complete) ctx.drawImage(b.img, -b.size / 2, -b.size / 2, b.size, b.size); ctx.restore(); });
     sparks.forEach(s => { ctx.fillStyle = `rgba(255, 255, 100, ${s.life})`; ctx.fillRect(s.x, s.y, 4, 4); });
     players.forEach(p => p.draw(ctx));
+
+    // Draw Floating Texts
+    floatingTexts.forEach(ft => {
+        ctx.save();
+        ctx.globalAlpha = ft.life;
+        ctx.fillStyle = ft.color;
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 3.5;
+        ctx.font = 'bold 24px "Fredoka One"';
+        ctx.textAlign = 'center';
+        ctx.strokeText(ft.text, ft.x, ft.y);
+        ctx.fillText(ft.text, ft.x, ft.y);
+        ctx.restore();
+    });
+
     ctx.restore();
 }
 
