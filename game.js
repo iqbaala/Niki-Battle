@@ -733,19 +733,32 @@ function update(deltaTime) {
             statsPanel.style.display = 'none';
         } else {
             statsPanel.style.display = 'flex';
-            let p1 = players[0];
-            let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
-            if (p1) {
-                let nameLabel = document.getElementById('p1-name-label');
-                if (nameLabel) nameLabel.innerText = p1.name;
-                let valLabel = document.getElementById('p1-hits-val');
-                if (valLabel) valLabel.innerText = p1.skillActive ? "ACTIVE!" : `${p1.skillPoints} / ${p1.skillConfig.maxHits}`;
-            }
-            if (p2) {
-                let nameLabel = document.getElementById('p2-name-label');
-                if (nameLabel) nameLabel.innerText = p2.name;
-                let valLabel = document.getElementById('p2-hits-val');
-                if (valLabel) valLabel.innerText = p2.skillActive ? "ACTIVE!" : `${p2.skillPoints} / ${p2.skillConfig.maxHits}`;
+            if (gameMode === '1v1') {
+                let p1 = players[0];
+                let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
+                if (p1) {
+                    document.getElementById('stat-label-0').innerText = "Special Skill P1";
+                    document.getElementById('stat-val-0').innerText = p1.skillActive ? "ACTIVE!" : p1.skillConfig.name;
+                    
+                    document.getElementById('stat-label-2').innerText = "Hits To Skill P1";
+                    document.getElementById('stat-val-2').innerText = p1.skillActive ? "ACTIVE!" : `${p1.skillPoints} / ${p1.skillConfig.maxHits}`;
+                }
+                if (p2) {
+                    document.getElementById('stat-label-1').innerText = "Special Skill P2";
+                    document.getElementById('stat-val-1').innerText = p2.skillActive ? "ACTIVE!" : p2.skillConfig.name;
+                    
+                    document.getElementById('stat-label-3').innerText = "Hits To Skill P2";
+                    document.getElementById('stat-val-3').innerText = p2.skillActive ? "ACTIVE!" : `${p2.skillPoints} / ${p2.skillConfig.maxHits}`;
+                }
+            } else if (gameMode === '2v2') {
+                // Show all 4 players' stats in 4 boxes
+                for (let idx = 0; idx < 4; idx++) {
+                    let p = players[idx];
+                    if (p) {
+                        document.getElementById(`stat-label-${idx}`).innerText = p.name;
+                        document.getElementById(`stat-val-${idx}`).innerText = p.skillActive ? "ACTIVE!" : `${p.skillPoints} / ${p.skillConfig.maxHits}`;
+                    }
+                }
             }
         }
     }
