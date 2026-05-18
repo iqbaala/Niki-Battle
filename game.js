@@ -617,12 +617,12 @@ class Character {
 
 function createHudCardHtml(p, idx) {
     let teamColors = ['#6da366', '#c73636', '#3b78c9', '#e8a33a', '#9444b0', '#32a89c', '#a83267', '#8a8536'];
-    return `<div class="hud-card" id="hud-${idx}" style="border-color: ${teamColors[p.teamId]}; min-width: 80px; padding: 2px 4px; gap: 3px; border-radius: 6px;">
-        <img src="${p.img.src}" class="hud-img" style="border-color: ${teamColors[p.teamId]}; width: 22px; height: 22px; border-radius: 50%;">
-        <div class="hud-bars-container" style="width: 48px;">
-            <div class="hud-name" style="font-size: 8px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white;">${p.name}</div>
-            <div class="hud-bar" style="height: 3px; margin-top: 1px;"><div class="hud-hp-fill" id="hp-fill-${idx}"></div></div>
-            <div class="hud-bar" style="height: 3px; margin-top: 1px;"><div class="hud-skill-fill" id="skill-fill-${idx}"></div></div>
+    return `<div class="hud-card" id="hud-${idx}" style="border-color: ${teamColors[p.teamId]}; min-width: 90px; padding: 4px; gap: 5px; border-radius: 6px;">
+        <img src="${p.img.src}" class="hud-img" style="border-color: ${teamColors[p.teamId]}; width: 28px; height: 28px; border-radius: 50%;">
+        <div class="hud-bars-container" style="width: 58px;">
+            <div class="hud-name" style="font-size: 10px; font-weight: bold; font-family: 'Fredoka One', cursive; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: white;">${p.name}</div>
+            <div class="hud-bar" style="height: 4px; margin-top: 1px;"><div class="hud-hp-fill" id="hp-fill-${idx}"></div></div>
+            <div class="hud-bar" style="height: 4px; margin-top: 1px;"><div class="hud-skill-fill" id="skill-fill-${idx}"></div></div>
         </div>
     </div>`;
 }
@@ -678,7 +678,7 @@ function startBattle() {
         players.forEach((p, idx) => {
             if (idx > 0 && idx % 2 === 0 && gameMode === '1v1') hud.innerHTML += '<div class="hud-vs">VS</div>';
             else if (idx === 1 && gameMode === '1v1') hud.innerHTML += '<div class="hud-vs">VS</div>';
-            hud.innerHTML += `<div class="hud-card" id="hud-${idx}" style="border-color: ${teamColors[p.teamId]}"><img src="${p.img.src}" class="hud-img" style="border-color: ${teamColors[p.teamId]}"><div class="hud-bars-container"><div class="hud-name" style="display: flex; justify-content: space-between; align-items: center;"><span>${p.name}</span><span style="color: #ffca28; font-size: 7px; margin-left: 4px;">${p.skillConfig.name}</span></div><div class="hud-bar"><div class="hud-hp-fill" id="hp-fill-${idx}"></div></div><div class="hud-bar"><div class="hud-skill-fill" id="skill-fill-${idx}"></div></div></div></div>`;
+            hud.innerHTML += `<div class="hud-card" id="hud-${idx}" style="border-color: ${teamColors[p.teamId]}"><img src="${p.img.src}" class="hud-img" style="border-color: ${teamColors[p.teamId]}"><div class="hud-bars-container"><div class="hud-name">${p.name}</div><div class="hud-bar"><div class="hud-hp-fill" id="hp-fill-${idx}"></div></div><div class="hud-bar"><div class="hud-skill-fill" id="skill-fill-${idx}"></div></div></div></div>`;
         });
     }
 
