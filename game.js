@@ -193,7 +193,7 @@ function updateWeaponSelectionInstruction() {
 
 function selectMode(mode) {
     gameMode = mode;
-    totalPlayersNeeded = (mode === '1v1') ? 2 : (mode === '2v2' ? 4 : 8);
+    totalPlayersNeeded = (mode === '1v1') ? 2 : (mode === '2v2' ? 4 : 9);
     currentPlayerIndex = 1; pickedCharacters = []; selectedConfigs = []; selectionState = 'CHAR';
     updateCharSelectionInstruction();
     modeScreen.classList.add('hidden');
@@ -727,15 +727,27 @@ function update(deltaTime) {
     });
 
     // Update Bottom Panel (Player 1 & Player 2 Side-by-Side)
-    let p1 = players[0];
-    let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
-    if (p1) {
-        document.getElementById('p1-skill-name').innerText = p1.skillActive ? "ACTIVE!" : p1.skillConfig.name;
-        document.getElementById('p1-hits-val').innerText = `${p1.skillPoints} / ${p1.skillConfig.maxHits}`;
-    }
-    if (p2) {
-        document.getElementById('p2-skill-name').innerText = p2.skillActive ? "ACTIVE!" : p2.skillConfig.name;
-        document.getElementById('p2-hits-val').innerText = `${p2.skillPoints} / ${p2.skillConfig.maxHits}`;
+    let statsPanel = document.getElementById('bottom-stats-panel');
+    if (statsPanel) {
+        if (gameMode === 'br8') {
+            statsPanel.style.display = 'none';
+        } else {
+            statsPanel.style.display = 'flex';
+            let p1 = players[0];
+            let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
+            if (p1) {
+                let nameLabel = document.getElementById('p1-name-label');
+                if (nameLabel) nameLabel.innerText = p1.name;
+                let valLabel = document.getElementById('p1-hits-val');
+                if (valLabel) valLabel.innerText = p1.skillActive ? "ACTIVE!" : `${p1.skillPoints} / ${p1.skillConfig.maxHits}`;
+            }
+            if (p2) {
+                let nameLabel = document.getElementById('p2-name-label');
+                if (nameLabel) nameLabel.innerText = p2.name;
+                let valLabel = document.getElementById('p2-hits-val');
+                if (valLabel) valLabel.innerText = p2.skillActive ? "ACTIVE!" : `${p2.skillPoints} / ${p2.skillConfig.maxHits}`;
+            }
+        }
     }
 
     // Collision Loops
@@ -1000,11 +1012,8 @@ function draw() {
         ctx.save();
         ctx.globalAlpha = ft.life;
         ctx.fillStyle = ft.color;
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 3.5;
         ctx.font = 'bold 24px "Fredoka One"';
         ctx.textAlign = 'center';
-        ctx.strokeText(ft.text, ft.x, ft.y);
         ctx.fillText(ft.text, ft.x, ft.y);
         ctx.restore();
     });
