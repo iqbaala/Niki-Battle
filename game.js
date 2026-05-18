@@ -89,19 +89,19 @@ const weapons = [
     { name: "War Hammer", type: "melee", damage: 8, cooldown: 1500, spinSpeed: 0.003, hitSound: "hammerHit", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/War Hammer.png" },
     { name: "Pistol", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 10, projImg: "Efek Senjata/Pistol.png", shootInterval: 800, damage: 4, cooldown: 0, spinSpeed: 0.005, hitSound: "swordHit", critChance: 0.10, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Pistol.png" },
     { name: "Shotgun", type: "ranged", projCount: 3, projSpread: 0.4, projSpeed: 8, projImg: "Efek Senjata/Shotgun.png", shootInterval: 1500, damage: 3, cooldown: 0, spinSpeed: 0.003, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata 2/ShotGun.png" },
-    { name: "Bow", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 9, projImg: "Efek Senjata/Panah.png", shootInterval: 1000, damage: 5, cooldown: 0, spinSpeed: 0.004, hitSound: "swordHit", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bow.png" },
+    { name: "Bow", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 9, projImg: "Efek Senjata/Panah.png", shootInterval: 1000, damage: 5, cooldown: 0, spinSpeed: 0.004, hitSound: "batPunch", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bow.png" },
     { name: "Torch", type: "trail", dropInterval: 600, trailDuration: 3000, trailImg: "Efek Senjata/Torch.png", damage: 2, cooldown: 500, spinSpeed: 0.008, hitSound: "batPunch", lifesteal: 0, img: "Asset Senjata 2/Torch.png" },
     { name: "Bat", type: "melee", damage: 4, cooldown: 500, spinSpeed: 0.008, hitSound: "batPunch", critChance: 0.15, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bat.png" },
-    { name: "Boomerang", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 6, projImg: "Asset Senjata 2/Boomerang.png", shootInterval: 900, damage: 5, cooldown: 0, spinSpeed: 0.01, hitSound: "swordHit", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Boomerang.png" },
+    { name: "Boomerang", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 6, projImg: "Asset Senjata 2/Boomerang.png", shootInterval: 900, damage: 5, cooldown: 0, spinSpeed: 0.01, hitSound: "batPunch", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Boomerang.png" },
     { name: "Pan", type: "melee", damage: 6, cooldown: 700, spinSpeed: 0.006, hitSound: "hammerHit", critChance: 0.10, critMult: 2.5, lifesteal: 0, img: "Asset Senjata 2/Pan.png" },
     { name: "Shield", type: "melee", damage: 3, cooldown: 400, spinSpeed: 0.005, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata 2/Shield.png" },
-    { name: "Shuriken", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 12, projImg: "Asset Senjata 2/Shuriken.png", shootInterval: 400, damage: 2, cooldown: 0, spinSpeed: 0.02, hitSound: "swordHit", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Shuriken.png" },
+    { name: "Shuriken", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 12, projImg: "Asset Senjata 2/Shuriken.png", shootInterval: 400, damage: 2, cooldown: 0, spinSpeed: 0.02, hitSound: "batPunch", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Shuriken.png" },
     { name: "Shyte", type: "melee", damage: 8, cooldown: 1200, spinSpeed: 0.004, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0.50, img: "Asset Senjata 2/Shyte.png" }
 ];
 
 // 20 Unique Skills
 const skillsConfig = {
-    "United States": { name: "Rapid Fire", maxHits: 5 },
+    "United States": { name: "Rapid Fire", maxHits: 6, duration: 3000 },
     "Russia": { name: "Iron Defense", maxHits: 5, duration: 4000 },
     "China": { name: "Dragon Trail", maxHits: 5, duration: 4000 },
     "India": { name: "Heal", maxHits: 5 },
@@ -248,13 +248,13 @@ class Character {
         this.weaponImg = getImg(config.weapon.img);
         this.teamId = config.teamId;
         this.x = x; this.y = y;
-        
+
         let isBR = (gameMode === 'br8');
         this.radius = isBR ? 18 : 30;
         this.weaponOrbitRadius = isBR ? 39 : 65;
         this.weaponRadius = isBR ? 21 : 35;
         this.weaponAngle = 0;
-        
+
         this.spinDirection = 1; this.hp = 100; this.maxHp = 100; this.vx = (Math.random() - 0.5) * 8; this.vy = (Math.random() - 0.5) * 8;
         this.hitCooldown = 0; this.flashTimer = 0; this.weaponClashCooldown = 0;
         this.speedMultiplier = 1.0; this.baseSpinSpeed = config.weapon.spinSpeed;
@@ -274,6 +274,7 @@ class Character {
         this.clones = [];
         this.extraSpinAngle = 0;
         this.wallResilienceValue = 0;
+        this.indonesiaShield = 0;
 
         this.shootTimer = config.weapon.shootInterval || 0;
         this.trailTimer = config.weapon.dropInterval || 0;
@@ -295,14 +296,25 @@ class Character {
 
         // Skill-specific continuous updates
         if (this.skillActive) {
+            if (this.name === "United States") {
+                this.trailTimer -= deltaTime;
+                if (this.trailTimer <= 0) {
+                    this.trailTimer = 150; // Shoot every 150ms
+                    let target = players.find(p => p !== this && p.hp > 0 && p.teamId !== this.teamId);
+                    if (target) {
+                        let angle = Math.atan2(target.y - this.y, target.x - this.x) + (Math.random() - 0.5) * 0.3;
+                        bullets.push({ x: this.x, y: this.y, vx: Math.cos(angle) * 12, vy: Math.sin(angle) * 12, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: angle, size: isBR ? 42 : 70, damage: 1 });
+                    }
+                }
+            }
             if (this.name === "China") {
-                this.trailTimer -= deltaTime; if (this.trailTimer <= 0) { this.trailTimer = 200; trails.push({ x: this.x, y: this.y, duration: 2000, maxDuration: 2000, owner: this, img: getImg("Efek Senjata/Torch.png"), size: isBR ? 24 : 40 }); }
+                this.trailTimer -= deltaTime; if (this.trailTimer <= 0) { this.trailTimer = 200; trails.push({ x: this.x, y: this.y, duration: 2000, maxDuration: 2000, owner: this, img: getImg("Efek Senjata/Torch.png"), size: isBR ? 42 : 70 }); }
             }
             if (this.name === "Indonesia") {
                 this.trailTimer -= deltaTime;
                 if (this.trailTimer <= 0) {
                     this.trailTimer = 500;
-                    bullets.push({ x: Math.random() * 430, y: -50, vx: 0, vy: 10, img: getImg("Efek Senjata/Panah.png"), owner: this, angle: Math.PI / 2, size: isBR ? 24 : 40 });
+                    bullets.push({ x: Math.random() * 430, y: -50, vx: 0, vy: 10, img: getImg("Efek Senjata/Panah.png"), owner: this, angle: Math.PI / 2, size: isBR ? 42 : 70 });
                 }
             }
             if (this.name === "Germany") {
@@ -311,11 +323,11 @@ class Character {
                     this.trailTimer = 800;
                     let target = players.find(p => p !== this && p.hp > 0 && p.teamId !== this.teamId);
                     let angle = target ? Math.atan2(target.y - this.y, target.x - this.x) : this.weaponAngle;
-                    bullets.push({ x: this.x, y: this.y, vx: Math.cos(angle) * 12, vy: Math.sin(angle) * 12, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: angle, size: isBR ? 18 : 30 });
+                    bullets.push({ x: this.x, y: this.y, vx: Math.cos(angle) * 12, vy: Math.sin(angle) * 12, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: angle, size: isBR ? 30 : 50 });
                 }
             }
             if (this.cursedAura) {
-                players.forEach(p => { 
+                players.forEach(p => {
                     if (p !== this && p.hp > 0 && p.teamId !== this.teamId) {
                         let dist = Math.hypot(p.x - this.x, p.y - this.y);
                         if (dist < (isBR ? 90 : 150)) p.hp -= 0.5 * (deltaTime / 1000); // 0.5 damage per second
@@ -323,7 +335,7 @@ class Character {
                 });
             }
             if (this.name === "France") {
-                players.forEach(p => { 
+                players.forEach(p => {
                     if (p !== this && p.teamId !== this.teamId) {
                         let dist = Math.hypot(p.x - this.x, p.y - this.y);
                         if (dist < (isBR ? 90 : 150)) p.speedMultiplier = 0.7;
@@ -348,12 +360,12 @@ class Character {
                 this.shootTimer = this.weapon.shootInterval;
                 for (let i = 0; i < this.weapon.projCount; i++) {
                     let angle = this.weaponAngle + (Math.random() - 0.5) * this.weapon.projSpread;
-                    bullets.push({ x: this.x + Math.cos(this.weaponAngle) * (this.weaponOrbitRadius + 5), y: this.y + Math.sin(this.weaponAngle) * (this.weaponOrbitRadius + 5), vx: Math.cos(angle) * this.weapon.projSpeed, vy: Math.sin(angle) * this.weapon.projSpeed, img: getImg(this.weapon.projImg), owner: this, angle: angle, size: isBR ? 24 : 40 });
+                    bullets.push({ x: this.x + Math.cos(this.weaponAngle) * (this.weaponOrbitRadius + 5), y: this.y + Math.sin(this.weaponAngle) * (this.weaponOrbitRadius + 5), vx: Math.cos(angle) * this.weapon.projSpeed, vy: Math.sin(angle) * this.weapon.projSpeed, img: getImg(this.weapon.projImg), owner: this, angle: angle, size: isBR ? 42 : 70 });
                 }
             }
         } else if (this.weapon.type === 'trail' && this.hp > 0) {
             this.trailTimer -= deltaTime * globalPacingMultiplier;
-            if (this.trailTimer <= 0) { this.trailTimer = this.weapon.dropInterval; trails.push({ x: this.x, y: this.y, duration: this.weapon.trailDuration, maxDuration: this.weapon.trailDuration, owner: this, img: getImg(this.weapon.trailImg), size: isBR ? 36 : 60 }); }
+            if (this.trailTimer <= 0) { this.trailTimer = this.weapon.dropInterval; trails.push({ x: this.x, y: this.y, duration: this.weapon.trailDuration, maxDuration: this.weapon.trailDuration, owner: this, img: getImg(this.weapon.trailImg), size: isBR ? 54 : 90 }); }
         }
 
         let spinMult = 1.0;
@@ -380,11 +392,11 @@ class Character {
             let minX = 195, maxX = 235, minY = 130, maxY = 300;
             let closestX = Math.max(minX, Math.min(this.x, maxX));
             let closestY = Math.max(minY, Math.min(this.y, maxY));
-            
+
             let dx = this.x - closestX;
             let dy = this.y - closestY;
             let dist = Math.hypot(dx, dy);
-            
+
             if (dist < this.radius) {
                 let overlap = this.radius - dist;
                 if (dist === 0) {
@@ -402,7 +414,7 @@ class Character {
                     let ny = dy / dist;
                     this.x += nx * overlap;
                     this.y += ny * overlap;
-                    
+
                     if (nx !== 0) this.vx = nx * Math.abs(this.vx) * 0.8;
                     if (ny !== 0) this.vy = ny * Math.abs(this.vy) * 0.8;
                 }
@@ -419,13 +431,22 @@ class Character {
 
     takeDamage(attacker, hX, hY, isProjectile = false, customDamage = null) {
         if (this.hp <= 0 || this.hitCooldown > 0 || this.invincible) return false;
-        
+
+        // Indonesia blocks damage 1 time after special skill is active
+        if (this.name === "Indonesia" && this.indonesiaShield > 0) {
+            this.indonesiaShield--;
+            playSound('tap');
+            screenShake = 5;
+            this.flashTimer = 50;
+            return false; // Blocks hit completely!
+        }
+
         let actualDamageReduction = this.damageReduction;
         if (this.skillActive && this.name === "Russia") return false; // Immune to everything
 
         let isCrit = Math.random() < attacker.weapon.critChance;
         if (attacker.guaranteedCrit > 0) { isCrit = true; attacker.guaranteedCrit--; }
-        
+
         let damage = customDamage !== null ? customDamage : attacker.weapon.damage * attacker.damageMultiplier;
         if (!isProjectile && attacker.weapon.type === 'ranged' && customDamage === null) damage *= 0.2;
         if (isCrit) damage *= attacker.weapon.critMult;
@@ -464,17 +485,18 @@ class Character {
         ctx.save(); ctx.translate(this.x, this.y);
         ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.clip();
         if (this.img.complete) ctx.drawImage(this.img, -this.radius, -this.radius, this.radius * 2, this.radius * 2);
-        
+
         // Damage Flash
         if (this.flashTimer > 0) { ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; ctx.fill(); }
-        
+
         // Skill Red Blink
         if (this.skillActive && Math.floor(Date.now() / 150) % 2 === 0) {
             ctx.fillStyle = 'rgba(255, 0, 0, 0.4)';
             ctx.fill();
         }
-        
+
         if (this.invincible) { ctx.strokeStyle = 'cyan'; ctx.lineWidth = 6; ctx.stroke(); }
+        if (this.name === "Indonesia" && this.indonesiaShield > 0) { ctx.strokeStyle = '#4caf50'; ctx.lineWidth = 6; ctx.stroke(); }
         ctx.restore();
 
         ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.lineWidth = 4;
@@ -506,20 +528,14 @@ class Character {
 
         switch (this.name) {
             case "United States":
-                let tUSA = players.find(p => p !== this && p.hp > 0 && p.teamId !== this.teamId);
-                if (tUSA) {
-                    for (let i = 0; i < 5; i++) {
-                        let a = Math.random() * Math.PI * 2;
-                        bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 8, vy: Math.sin(a) * 8, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: a, size: isBR ? 24 : 40, homing: true, target: tUSA, damage: 2 });
-                    }
-                }
-                this.deactivateSkill(); break;
+                this.trailTimer = 0;
+                break;
             case "India": this.hp = Math.min(this.maxHp, this.hp + 7); this.deactivateSkill(); break;
             case "United Kingdom":
-                for (let i = 0; i < 8; i++) { let a = i * (Math.PI * 2 / 8); bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 10, vy: Math.sin(a) * 10, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: a, size: isBR ? 27 : 45 }); }
+                for (let i = 0; i < 8; i++) { let a = i * (Math.PI * 2 / 8); bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 10, vy: Math.sin(a) * 10, img: getImg("Efek Senjata/Pistol.png"), owner: this, angle: a, size: isBR ? 42 : 70 }); }
                 this.deactivateSkill(); break;
             case "Turkey": this.knockbackMult = 2.2; break;
-            case "Pakistan": 
+            case "Pakistan":
                 let tPak = players.find(p => p !== this && p.hp > 0 && p.teamId !== this.teamId);
                 if (tPak) {
                     let a = Math.atan2(tPak.y - this.y, tPak.x - this.x);
@@ -528,11 +544,11 @@ class Character {
                 }
                 this.deactivateSkill(); break;
             case "Italy": this.damageMultiplier = 1.4; break;
-            case "Japan": this.clones = [{x:0,y:0}, {x:0,y:0}]; break;
+            case "Japan": this.clones = [{ x: 0, y: 0 }, { x: 0, y: 0 }]; break;
             case "Australia":
                 for (let i = 0; i < 6; i++) {
                     let a = i * (Math.PI * 2 / 6);
-                    bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 8, vy: Math.sin(a) * 8, img: getImg("Asset Senjata 2/Boomerang.png"), owner: this, angle: a, size: isBR ? 33 : 55, returning: true, returnTimer: 1000 });
+                    bullets.push({ x: this.x, y: this.y, vx: Math.cos(a) * 8, vy: Math.sin(a) * 8, img: getImg("Asset Senjata 2/Boomerang.png"), owner: this, angle: a, size: isBR ? 48 : 80, returning: true, returnTimer: 1000 });
                 }
                 break;
             case "Ukraine": this.damageReduction = 0.5; break;
@@ -540,13 +556,16 @@ class Character {
             case "Spain": this.reflectDamage = true; break;
             case "Israel": this.siphonLife = true; break;
             case "Egypt": this.cursedAura = true; break;
-            case "Indonesia": this.trailTimer = 0; break;
+            case "Indonesia":
+                this.trailTimer = 0;
+                this.indonesiaShield = 1;
+                break;
         }
     }
 
     deactivateSkill() {
         this.skillActive = false; this.skillTimer = 0; this.invincible = false; this.damageMultiplier = 1.0; this.knockbackMult = 1.0;
-        this.damageReduction = 0; this.reflectDamage = false; this.clones = [];
+        this.damageReduction = 0; this.reflectDamage = false; this.clones = []; this.indonesiaShield = 0;
         players.forEach(p => { if (p.speedMultiplier < 1.0) p.speedMultiplier = 1.0; });
     }
 }
@@ -567,7 +586,7 @@ function createHudCardHtml(p, idx) {
 
 function startBattle() {
     bloodSplatters = []; bullets = []; trails = []; sparks = []; globalPacingMultiplier = 1.0; players = [];
-    
+
     selectedConfigs.forEach(c => {
         let x, y, safe = false;
         let attempts = 0;
@@ -589,7 +608,7 @@ function startBattle() {
 
     // Build HUD with VS
     const hud = document.getElementById('battle-hud'); hud.innerHTML = '';
-    
+
     if (gameMode === '2v2') {
         hud.innerHTML = `
             <div style="display: flex; flex-direction: column; width: 100%; align-items: center; gap: 4px;">
@@ -651,13 +670,16 @@ function update(deltaTime) {
         if (p.hp <= 0) document.getElementById(`hud-${idx}`).classList.add('dead');
     });
 
-    // Update Bottom Panel (Player 1 Focus)
+    // Update Bottom Panel (Player 1 & Player 2 Side-by-Side)
     let p1 = players[0];
+    let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
     if (p1) {
         document.getElementById('p1-skill-name').innerText = p1.skillActive ? "ACTIVE!" : p1.skillConfig.name;
-        document.getElementById('p1-dmg-val').innerText = (p1.weapon.damage * p1.damageMultiplier).toFixed(1);
-        document.getElementById('p1-size-val').innerText = (gameMode === 'br8' ? 0.60 : 1.00).toFixed(2);
         document.getElementById('p1-hits-val').innerText = `${p1.skillPoints} / ${p1.skillConfig.maxHits}`;
+    }
+    if (p2) {
+        document.getElementById('p2-skill-name').innerText = p2.skillActive ? "ACTIVE!" : p2.skillConfig.name;
+        document.getElementById('p2-hits-val').innerText = `${p2.skillPoints} / ${p2.skillConfig.maxHits}`;
     }
 
     // Collision Loops
@@ -708,7 +730,12 @@ function update(deltaTime) {
 
                 let distW = Math.hypot(wpB.x - wpA.x, wpB.y - wpA.y);
                 if (distW < charA.weaponRadius + charB.weaponRadius && charA.weaponClashCooldown <= 0) {
-                    charA.spinDirection *= -1; charB.spinDirection *= -1; charA.weaponClashCooldown = 250; charB.weaponClashCooldown = 250; playSound('clash');
+                    charA.spinDirection *= -1; charB.spinDirection *= -1; charA.weaponClashCooldown = 250; charB.weaponClashCooldown = 250;
+                    if (charA.weapon.hitSound === 'batPunch' || charB.weapon.hitSound === 'batPunch') {
+                        playSound('batPunch');
+                    } else {
+                        playSound('clash');
+                    }
                     for (let k = 0; k < 5; k++) sparks.push({ x: (wpA.x + wpB.x) / 2, y: (wpA.y + wpB.y) / 2, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10, life: 1.0 });
                 }
             }
@@ -745,8 +772,8 @@ function update(deltaTime) {
         if (b.x < -100 || b.x > 530 || b.y < -100 || b.y > 530) { bullets.splice(i, 1); continue; }
         for (let p of players) {
             if (p.hp > 0 && p.teamId !== b.owner.teamId && Math.hypot(p.x - b.x, p.y - b.y) < p.radius + b.size / 2) {
-                if (p.takeDamage(b.owner, b.x, b.y, true, b.damage || null)) { 
-                    playSound(b.owner.weapon.hitSound); p1Hit(b.owner); 
+                if (p.takeDamage(b.owner, b.x, b.y, true, b.damage || null)) {
+                    playSound(b.owner.weapon.hitSound); p1Hit(b.owner);
                 }
                 bullets.splice(i, 1); break;
             }
@@ -777,41 +804,41 @@ function p1Hit(attacker) {
 
 function drawBrWall(ctx) {
     if (gameMode !== 'br8') return;
-    
+
     ctx.save();
     let grad = ctx.createLinearGradient(195, 130, 235, 300);
     grad.addColorStop(0, '#5d4037');
     grad.addColorStop(0.5, '#8d6e63');
     grad.addColorStop(1, '#4e342e');
-    
+
     ctx.fillStyle = grad;
     ctx.strokeStyle = '#2d1510';
     ctx.lineWidth = 4;
-    
+
     ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
     ctx.shadowBlur = 10;
     ctx.shadowOffsetX = 4;
     ctx.shadowOffsetY = 4;
-    
+
     // Draw outer box
     ctx.beginPath();
     ctx.roundRect(195, 130, 40, 170, 4);
     ctx.fill();
     ctx.stroke();
-    
+
     // Reset shadow for details
     ctx.shadowBlur = 0;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
-    
+
     // Brick mortar lines (matching realistic brick size ratios)
     ctx.strokeStyle = '#2d1510';
     ctx.lineWidth = 2.5;
-    
+
     let startY = 130;
     let endY = 300;
     let rowHeight = 14;
-    
+
     // Draw horizontal mortar lines
     for (let y = startY + rowHeight; y < endY; y += rowHeight) {
         ctx.beginPath();
@@ -819,7 +846,7 @@ function drawBrWall(ctx) {
         ctx.lineTo(235, y);
         ctx.stroke();
     }
-    
+
     // Draw vertical mortar lines (staggered staggered pattern)
     let rowIndex = 0;
     for (let y = startY; y < endY; y += rowHeight) {
@@ -848,7 +875,7 @@ function draw() {
     ctx.save();
     if (screenShake > 0) ctx.translate(Math.random() * screenShake - screenShake / 2, Math.random() * screenShake - screenShake / 2);
     ctx.clearRect(0, 0, 430, 430);
-    let arenaImg = getImg(gameMode === 'br8' ? 'Asset Battle Royale.png' : 'Asset Arena.png'); 
+    let arenaImg = getImg(gameMode === 'br8' ? 'Asset Battle Royale.png' : 'Asset Arena.png');
     if (arenaImg.complete) ctx.drawImage(arenaImg, 0, 0, 430, 430);
 
     // Draw Blood Splatters
