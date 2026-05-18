@@ -288,6 +288,20 @@ body {
     font-family: 'Fredoka One', cursive;
 }
 
+#pacing-badge {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: #ffca28;
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 #game-over-screen {
     position: absolute;
     top: 0;

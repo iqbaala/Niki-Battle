@@ -115,7 +115,7 @@ const weapons = [
 // 20 Unique Skills
 const skillsConfig = {
     "United States": { name: "Rapid Fire", maxHits: 6, duration: 3000 },
-    "Russia": { name: "Iron Defense", maxHits: 5, duration: 4000 },
+    "Russia": { name: "Iron Defense", maxHits: 5, duration: 3000 },
     "China": { name: "Dragon Trail", maxHits: 7, duration: 4000 },
     "India": { name: "Heal", maxHits: 5 },
     "South Korea": { name: "Turbo Spin", maxHits: 5, duration: 6000 },
@@ -728,11 +728,17 @@ function update(deltaTime) {
 
     // Update Bottom Panel (Player 1 & Player 2 Side-by-Side)
     let statsPanel = document.getElementById('bottom-stats-panel');
+    let pacingBadge = document.getElementById('pacing-badge');
     if (statsPanel) {
         if (gameMode === 'br8') {
             statsPanel.style.display = 'none';
+            if (pacingBadge) pacingBadge.classList.add('hidden');
         } else {
             statsPanel.style.display = 'flex';
+            if (pacingBadge) {
+                pacingBadge.classList.remove('hidden');
+                pacingBadge.innerText = `Pacing: ${globalPacingMultiplier.toFixed(2)}x`;
+            }
             if (gameMode === '1v1') {
                 let p1 = players[0];
                 let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
@@ -1030,32 +1036,6 @@ function draw() {
         ctx.fillText(ft.text, ft.x, ft.y);
         ctx.restore();
     });
-
-    // Draw Pacing Speed Badge
-    ctx.save();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    ctx.lineWidth = 1.5;
-    
-    let text = `Pacing: ${globalPacingMultiplier.toFixed(2)}x`;
-    ctx.font = 'bold 10px "Fredoka One"';
-    let textWidth = ctx.measureText(text).width;
-    
-    let badgeW = textWidth + 16;
-    let badgeH = 18;
-    let badgeX = 215 - badgeW / 2;
-    let badgeY = 405; // Placed neatly near bottom edge
-    
-    ctx.beginPath();
-    ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 9);
-    ctx.fill();
-    ctx.stroke();
-    
-    ctx.fillStyle = '#ffca28'; // Yellow gold accent color
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(text, 215, badgeY + badgeH / 2);
-    ctx.restore();
 
     ctx.restore();
 }

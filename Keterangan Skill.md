@@ -7,7 +7,7 @@ Berikut adalah daftar 20 negara dan penjelasan efek dari *Special Skill* mereka.
 | Negara | Nama Skill | Penjelasan Efek | Durasi |
 | :--- | :--- | :--- | :--- |
 | **United States** | Rapid Fire | Menembakkan 5 Peluru homing (pasti kena) dengan damage 2. | Sekali Pakai |
-| **Russia** | Iron Defense | Mengurangi damage yang diterima sebesar 100% dan kebal knockback. | 4 Detik |
+| **Russia** | Iron Defense | Mengurangi damage yang diterima sebesar 100% dan kebal knockback. | 3 Detik |
 | **China** | Dragon Trail | Meninggalkan jejak naga yang memberikan damage kecil saat disentuh. | 4 Detik |
 | **India** | Heal | Memulihkan 7 HP secara instan. | Sekali Pakai |
 | **South Korea** | Turbo Spin | Meningkatkan kecepatan putaran senjata sebesar 70%. | 6 Detik |
