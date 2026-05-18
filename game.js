@@ -90,26 +90,26 @@ const countries = countryNames.map((name, index) => ({
 
 // Weapons Config
 const weapons = [
-    { name: "Dagger", type: "melee", damage: 2, cooldown: 200, spinSpeed: 0.015, hitSound: "swordHit", critChance: 0.30, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/Dagger.png" },
-    { name: "Sword", type: "melee", damage: 3, cooldown: 400, spinSpeed: 0.01, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Sword.png" },
-    { name: "Fuhma Shuriken", type: "melee", damage: 2, cooldown: 100, spinSpeed: 0.02, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Fuhma Shuriken.png" },
-    { name: "Katana", type: "melee", damage: 4, cooldown: 400, spinSpeed: 0.012, hitSound: "swordHit", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/Katana.png" },
-    { name: "Long Sword", type: "melee", damage: 5, cooldown: 600, spinSpeed: 0.008, hitSound: "swordHit", critChance: 0.15, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/Long Sword.png" },
-    { name: "Spear", type: "melee", damage: 4, cooldown: 600, spinSpeed: 0.008, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Spear.png" },
-    { name: "Maze", type: "melee", damage: 6, cooldown: 800, spinSpeed: 0.006, hitSound: "hammerHit", critChance: 0.10, critMult: 3.0, lifesteal: 0, img: "Asset Senjata/Maze.png" },
-    { name: "War Axe", type: "melee", damage: 7, cooldown: 900, spinSpeed: 0.005, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/War Axe.png" },
-    { name: "Halberd", type: "melee", damage: 7, cooldown: 1000, spinSpeed: 0.004, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Halberd.png" },
-    { name: "War Hammer", type: "melee", damage: 8, cooldown: 1500, spinSpeed: 0.003, hitSound: "hammerHit", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/War Hammer.png" },
-    { name: "Pistol", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 10, projImg: "Efek Senjata/Pistol.png", shootInterval: 800, damage: 4, cooldown: 0, spinSpeed: 0.005, hitSound: "swordHit", critChance: 0.10, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Pistol.png" },
-    { name: "Shotgun", type: "ranged", projCount: 3, projSpread: 0.4, projSpeed: 8, projImg: "Efek Senjata/Shotgun.png", shootInterval: 1500, damage: 3, cooldown: 0, spinSpeed: 0.003, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata 2/ShotGun.png" },
-    { name: "Bow", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 9, projImg: "Efek Senjata/Panah.png", shootInterval: 1000, damage: 5, cooldown: 0, spinSpeed: 0.004, hitSound: "batPunch", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bow.png" },
-    { name: "Torch", type: "trail", dropInterval: 600, trailDuration: 3000, trailImg: "Efek Senjata/Torch.png", damage: 2, cooldown: 500, spinSpeed: 0.008, hitSound: "batPunch", lifesteal: 0, img: "Asset Senjata 2/Torch.png" },
-    { name: "Bat", type: "melee", damage: 4, cooldown: 500, spinSpeed: 0.008, hitSound: "batPunch", critChance: 0.15, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bat.png" },
-    { name: "Boomerang", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 6, projImg: "Asset Senjata 2/Boomerang.png", shootInterval: 900, damage: 5, cooldown: 0, spinSpeed: 0.01, hitSound: "batPunch", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Boomerang.png" },
-    { name: "Pan", type: "melee", damage: 6, cooldown: 700, spinSpeed: 0.006, hitSound: "hammerHit", critChance: 0.10, critMult: 2.5, lifesteal: 0, img: "Asset Senjata 2/Pan.png" },
-    { name: "Shield", type: "melee", damage: 3, cooldown: 400, spinSpeed: 0.005, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata 2/Shield.png" },
-    { name: "Shuriken", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 12, projImg: "Asset Senjata 2/Shuriken.png", shootInterval: 400, damage: 2, cooldown: 0, spinSpeed: 0.02, hitSound: "batPunch", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Shuriken.png" },
-    { name: "Shyte", type: "melee", damage: 8, cooldown: 1200, spinSpeed: 0.004, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0.50, img: "Asset Senjata 2/Shyte.png" }
+    { name: "Dagger", type: "melee", damage: 4, cooldown: 200, spinSpeed: 0.015, hitSound: "swordHit", critChance: 0.30, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/Dagger.png" },
+    { name: "Sword", type: "melee", damage: 5, cooldown: 400, spinSpeed: 0.01, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Sword.png" },
+    { name: "Fuhma Shuriken", type: "melee", damage: 4, cooldown: 100, spinSpeed: 0.02, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Fuhma Shuriken.png" },
+    { name: "Katana", type: "melee", damage: 6, cooldown: 400, spinSpeed: 0.012, hitSound: "swordHit", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/Katana.png" },
+    { name: "Long Sword", type: "melee", damage: 7, cooldown: 600, spinSpeed: 0.008, hitSound: "swordHit", critChance: 0.15, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/Long Sword.png" },
+    { name: "Spear", type: "melee", damage: 6, cooldown: 600, spinSpeed: 0.008, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Spear.png" },
+    { name: "Maze", type: "melee", damage: 8, cooldown: 800, spinSpeed: 0.006, hitSound: "hammerHit", critChance: 0.10, critMult: 3.0, lifesteal: 0, img: "Asset Senjata/Maze.png" },
+    { name: "War Axe", type: "melee", damage: 9, cooldown: 900, spinSpeed: 0.005, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/War Axe.png" },
+    { name: "Halberd", type: "melee", damage: 9, cooldown: 1000, spinSpeed: 0.004, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata/Halberd.png" },
+    { name: "War Hammer", type: "melee", damage: 10, cooldown: 1500, spinSpeed: 0.003, hitSound: "hammerHit", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata/War Hammer.png" },
+    { name: "Pistol", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 10, projImg: "Efek Senjata/Pistol.png", shootInterval: 800, damage: 6, cooldown: 0, spinSpeed: 0.005, hitSound: "swordHit", critChance: 0.10, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Pistol.png" },
+    { name: "Shotgun", type: "ranged", projCount: 3, projSpread: 0.4, projSpeed: 8, projImg: "Efek Senjata/Shotgun.png", shootInterval: 1500, damage: 5, cooldown: 0, spinSpeed: 0.003, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata 2/ShotGun.png" },
+    { name: "Bow", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 9, projImg: "Efek Senjata/Panah.png", shootInterval: 1000, damage: 7, cooldown: 0, spinSpeed: 0.004, hitSound: "batPunch", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bow.png" },
+    { name: "Torch", type: "trail", dropInterval: 600, trailDuration: 3000, trailImg: "Efek Senjata/Torch.png", damage: 4, cooldown: 500, spinSpeed: 0.008, hitSound: "batPunch", lifesteal: 0, img: "Asset Senjata 2/Torch.png" },
+    { name: "Bat", type: "melee", damage: 6, cooldown: 500, spinSpeed: 0.008, hitSound: "batPunch", critChance: 0.15, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Bat.png" },
+    { name: "Boomerang", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 6, projImg: "Asset Senjata 2/Boomerang.png", shootInterval: 900, damage: 7, cooldown: 0, spinSpeed: 0.01, hitSound: "batPunch", critChance: 0.20, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Boomerang.png" },
+    { name: "Pan", type: "melee", damage: 8, cooldown: 700, spinSpeed: 0.006, hitSound: "hammerHit", critChance: 0.10, critMult: 2.5, lifesteal: 0, img: "Asset Senjata 2/Pan.png" },
+    { name: "Shield", type: "melee", damage: 5, cooldown: 400, spinSpeed: 0.005, hitSound: "hammerHit", critChance: 0, critMult: 1, lifesteal: 0, img: "Asset Senjata 2/Shield.png" },
+    { name: "Shuriken", type: "ranged", projCount: 1, projSpread: 0, projSpeed: 12, projImg: "Asset Senjata 2/Shuriken.png", shootInterval: 400, damage: 4, cooldown: 0, spinSpeed: 0.02, hitSound: "batPunch", critChance: 0.25, critMult: 2.0, lifesteal: 0, img: "Asset Senjata 2/Shuriken.png" },
+    { name: "Shyte", type: "melee", damage: 10, cooldown: 1200, spinSpeed: 0.004, hitSound: "swordHit", critChance: 0, critMult: 1, lifesteal: 0.50, img: "Asset Senjata 2/Shyte.png" }
 ];
 
 // 20 Unique Skills
@@ -868,7 +868,7 @@ function update(deltaTime) {
             }
         }
 
-        b.x += b.vx; b.y += b.vy;
+        b.x += b.vx * globalPacingMultiplier; b.y += b.vy * globalPacingMultiplier;
         if (!b.bounces && gameMode === 'br8') {
             let minX = 195, maxX = 235, minY = 130, maxY = 300;
             if (b.x >= minX && b.x <= maxX && b.y >= minY && b.y <= maxY) {
@@ -1030,6 +1030,32 @@ function draw() {
         ctx.fillText(ft.text, ft.x, ft.y);
         ctx.restore();
     });
+
+    // Draw Pacing Speed Badge
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.lineWidth = 1.5;
+    
+    let text = `Pacing: ${globalPacingMultiplier.toFixed(2)}x`;
+    ctx.font = 'bold 10px "Fredoka One"';
+    let textWidth = ctx.measureText(text).width;
+    
+    let badgeW = textWidth + 16;
+    let badgeH = 18;
+    let badgeX = 215 - badgeW / 2;
+    let badgeY = 405; // Placed neatly near bottom edge
+    
+    ctx.beginPath();
+    ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 9);
+    ctx.fill();
+    ctx.stroke();
+    
+    ctx.fillStyle = '#ffca28'; // Yellow gold accent color
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, 215, badgeY + badgeH / 2);
+    ctx.restore();
 
     ctx.restore();
 }
