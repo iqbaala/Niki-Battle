@@ -166,7 +166,7 @@ function updateCharSelectionInstruction() {
     if (!turnTextElement) return;
 
     if (gameMode === '2v2') {
-        let teamName = (currentPlayerIndex <= 2) ? "Tim A" : "Tim B";
+        let teamName = (currentPlayerIndex <= 2) ? "Team A" : "Team B";
         let teamColor = (currentPlayerIndex <= 2) ? "#6da366" : "#c73636";
         turnTextElement.innerHTML = `${currentPlayerIndex} (<span style="color: ${teamColor}; font-weight: bold;">${teamName}</span>)`;
     } else if (gameMode === 'br8') {
@@ -183,7 +183,7 @@ function updateWeaponSelectionInstruction() {
     if (!weaponTargetName || !base) return;
 
     if (gameMode === '2v2') {
-        let teamName = (currentPlayerIndex <= 2) ? "Tim A" : "Tim B";
+        let teamName = (currentPlayerIndex <= 2) ? "Team A" : "Team B";
         let teamColor = (currentPlayerIndex <= 2) ? "#6da366" : "#c73636";
         weaponTargetName.innerHTML = `<span style="color: ${teamColor}; font-weight: bold;">${base.char.name} (${teamName})</span>`;
     } else {
@@ -656,9 +656,9 @@ function startBattle() {
         hud.innerHTML = `
             <div style="display: flex; flex-direction: column; width: 100%; align-items: center; gap: 4px;">
                 <div style="display: flex; justify-content: space-between; width: 90%; font-size: 11px; text-shadow: 2px 2px 0 #000;">
-                    <div style="color: #6da366; font-weight: bold;">Tim A (${players[0].name} & ${players[1].name})</div>
+                    <div style="color: #6da366; font-weight: bold;">Team A (${players[0].name} & ${players[1].name})</div>
                     <div style="color: #ffca28; font-weight: bold;">VS</div>
-                    <div style="color: #c73636; font-weight: bold; text-align: right;">Tim B (${players[2].name} & ${players[3].name})</div>
+                    <div style="color: #c73636; font-weight: bold; text-align: right;">Team B (${players[2].name} & ${players[3].name})</div>
                 </div>
                 <div style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%;">
                     <div style="display: flex; gap: 4px;">
@@ -738,14 +738,14 @@ function update(deltaTime) {
                 let p2 = players.find(p => p.teamId !== p1.teamId) || players[1];
                 if (p1) {
                     document.getElementById('stat-label-0').innerText = "Special Skill P1";
-                    document.getElementById('stat-val-0').innerText = p1.skillActive ? "ACTIVE!" : p1.skillConfig.name;
+                    document.getElementById('stat-val-0').innerText = p1.skillConfig.name;
                     
                     document.getElementById('stat-label-2').innerText = "Hits To Skill P1";
                     document.getElementById('stat-val-2').innerText = p1.skillActive ? "ACTIVE!" : `${p1.skillPoints} / ${p1.skillConfig.maxHits}`;
                 }
                 if (p2) {
                     document.getElementById('stat-label-1').innerText = "Special Skill P2";
-                    document.getElementById('stat-val-1').innerText = p2.skillActive ? "ACTIVE!" : p2.skillConfig.name;
+                    document.getElementById('stat-val-1').innerText = p2.skillConfig.name;
                     
                     document.getElementById('stat-label-3').innerText = "Hits To Skill P2";
                     document.getElementById('stat-val-3').innerText = p2.skillActive ? "ACTIVE!" : `${p2.skillPoints} / ${p2.skillConfig.maxHits}`;
@@ -1043,10 +1043,10 @@ function showGameOver() {
     } else {
         if (gameMode === '2v2') {
             let winningTeamId = alive.teamId;
-            let teamName = (winningTeamId === 0) ? "Tim A" : "Tim B";
+            let teamName = (winningTeamId === 0) ? "Team A" : "Team B";
             let teamPlayers = players.filter(p => p.teamId === winningTeamId);
             let playerNames = teamPlayers.map(p => p.name).join(" & ");
-            winnerText.innerHTML = `${teamName} Menang!<br><span style="font-size: 18px; color: #ffca28; font-family: 'Roboto', sans-serif;">(${playerNames})</span>`;
+            winnerText.innerHTML = `${teamName} Wins!<br><span style="font-size: 18px; color: #ffca28; font-family: 'Roboto', sans-serif;">(${playerNames})</span>`;
         } else {
             winnerText.innerHTML = `${alive.name} Wins!`;
         }
