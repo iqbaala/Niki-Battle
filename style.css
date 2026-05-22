@@ -46,6 +46,10 @@ body {
     transition: opacity 0.3s;
 }
 
+#battle-screen {
+    padding-top: 85px;
+}
+
 .hidden {
     display: none !important;
     opacity: 0;
